@@ -1,4 +1,4 @@
-﻿using FI.AtividadeEntrevista.BLL;
+﻿﻿using FI.AtividadeEntrevista.BLL;
 using FI.AtividadeEntrevista.DML;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Incluir(BeneficiarioModel model)
         {
             BoBeneficiarios bo = new BoBeneficiarios();
-
+             
             if (!this.ModelState.IsValid)
             {
                 List<string> erros = (from item in ModelState.Values
@@ -26,18 +26,10 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-                string cpf = model.CPF.Replace(".", "").Replace("-", "");
-
-                if (!ValidarCpf(cpf))
-                    throw new InvalidOperationException("CPF inválido.");
-
-                if (bo.VerificarExistencia(cpf))
-                    throw new InvalidOperationException("Já existe um cliente cadastrado com este CPF.");
-
 
                 model.Id = bo.Incluir(new Beneficiario()
                 {
-                    CPF = cpf,
+                    CPF = model.CPF,
                     Nome = model.Nome,
                     IdCliente = model.IdCliente
                 });
@@ -63,25 +55,21 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-                string cpf = model.CPF.Replace(".", "").Replace("-", "");
-
-                if (!ValidarCpf(cpf))
-                    throw new InvalidOperationException("CPF inválido.");
-
                 bo.Alterar(new Beneficiario()
                 {
-                    CPF = cpf,
+                    CPF = model.CPF,
                     Nome = model.Nome,
                     IdCliente = model.IdCliente,
                     Id = model.Id
                 });
+
 
                 return Json(new { success = true, message = "Cadastro alterado com sucesso" });
             }
         }
 
         [HttpPost]
-        public JsonResult Excluir(long id)
+        public JsonResult RemoveBeneficiario(long id)
         {
             try
             {
@@ -96,7 +84,7 @@ namespace WebAtividadeEntrevista.Controllers
         }
 
         [HttpPost]
-        public JsonResult Listar(long idCliente)
+        public JsonResult BeneficiarioList(long idCliente)
         {
             try
             {
@@ -109,23 +97,6 @@ namespace WebAtividadeEntrevista.Controllers
             }
         }
 
-        public bool ValidarCpf(string cpf)
-        {
-            if (cpf.Length != 11 || cpf.All(c => c == cpf[0]))
-                return false;
 
-            int CalcularDigito(int posicoes)
-            {
-                int soma = 0;
-                for (int i = 0; i < posicoes; i++)
-                    soma += (cpf[i] - '0') * (posicoes + 1 - i);
-
-                int resto = soma % 11;
-                return resto < 2 ? 0 : 11 - resto;
-            }
-
-            return CalcularDigito(9) == (cpf[9] - '0') &&
-                   CalcularDigito(10) == (cpf[10] - '0');
-        }
     }
 }

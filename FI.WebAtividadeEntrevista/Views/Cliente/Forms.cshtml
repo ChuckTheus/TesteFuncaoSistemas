@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 <form id="formCadastro" method="post">
     <div class="row">
         <div class="col-md-6">
@@ -18,7 +18,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="CPF">CPF:</label>
-                <input required="required" type="text" class="form-control" id="CPF" name="CPF" placeholder="Ex.: 123.456.789-01" maxlength="14">
+                <input required="required" type="text" class="form-control cpf-mask" id="CPF" name="CPF" placeholder="Ex.: 999.999.999-99" maxlength="14">
             </div>
         </div>
         <div class="col-md-6">
@@ -78,18 +78,23 @@
         </div>
     </div>
 
+
     <div class="row">
+
         <div class="col-lg-12">
             <div class="pull-right">
                 <button type="submit" class="btn btn-sm btn-success">Salvar</button>
                 @Html.ActionLink("Voltar", "Index", "Cliente", new { }, new { @class = "btn btn-sm btn-danger" })
             </div>
-            <div class="pull-left">
-                <button type="button" id="beneficiarios" class="btn btn-primary">Beneficiários</button>
-            </div>
         </div>
     </div>
 </form>
+
+<div class="row">
+    <div class="col-md-4">
+        <button id="beneficiarios" class="btn btn-primary">Beneficiários</button>
+    </div>
+</div>
 
 <div class="modal fade" id="beneficiariosModal">
     <div class="modal-dialog">
@@ -113,10 +118,8 @@
                                 <input type="text" maxlength="50" class="form-control" id="nomeBeneficiario" placeholder="Ex: Maria">
                             </div>
                         </div>
-                        <div class="col-md-2" style="padding-top: 24px">
-                                <button type="button" class="btn btn-success w-100" id="incluir">Incluir</button>
-                        </div>
                     </div>
+                    <button type="button" class="btn btn-success" id="incluir">Incluir</button>
                 </form>
                 <table class="table mt-3">
                     <thead>

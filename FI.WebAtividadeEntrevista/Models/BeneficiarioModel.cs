@@ -23,7 +23,7 @@ namespace WebAtividadeEntrevista.Models
         public string Nome { get; set; }
 
         /// <summary>
-        /// ID do Cliente relacionado ao beneficiário
+        /// ID do Cliente associado
         /// </summary>
         [Required]
         public long IdCliente { get; set; }
